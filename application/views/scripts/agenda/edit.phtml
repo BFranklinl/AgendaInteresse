@@ -1,0 +1,95 @@
+<?php
+echo $this->headScript()->prependFile($this->baseUrl() . '/js/editContacto.js');
+?>
+<form class="form-horizontal" action ="<?php echo $this->url();?>" id="formEditContacto">
+    <h5 class="text-muted">Datos generales</h5>
+    <?php echo $this->form->id; ?>
+    <div class="form-group">
+        <label for="nombre" class="col-sm-3 control-label"><?php echo $this->form->nombre->getLabel(); ?></label>
+        <div class="col-sm-9">
+            <?php 
+            $this->form->nombre->class = 'form-control';
+            echo $this->form->nombre;?>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="correoElectronico" class="col-sm-3 control-label"><?php echo $this->form->correoElectronico->getLabel(); ?></label>
+        <div class="col-sm-9">
+            <?php
+            $this->form->correoElectronico->class = 'form-control';
+            echo $this->form->correoElectronico; ?>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="telefono" class="col-sm-3 control-label"><?php echo $this->form->telefono->getLabel(); ?></label>
+        <div class="col-sm-9">
+            <?php 
+            $this->form->telefono->class = 'form-control';
+            echo $this->form->telefono; ?>
+            <button type="button" class="btn btn-sm btn-success addTelefono"><i class="glyphicon glyphicon-plus"></i> <i class="glyphicon glyphicon-earphone"></i></button>
+        </div>
+    </div>
+    <hr />
+    <h5 class="text-muted">Domicilio</h5>
+    <div class="form-group">
+        <label for="calle" class="col-sm-3 control-label"><?php echo $this->form->calle->getLabel(); ?></label>
+        <div class="col-sm-9">
+            <?php
+            $this->form->calle->class = 'form-control';
+            echo $this->form->calle; ?>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="colonia" class="col-sm-3 control-label"><?php echo $this->form->colonia->getLabel(); ?></label>
+        <div class="col-sm-9">
+            <?php
+            $this->form->colonia->class = 'form-control';
+            echo $this->form->colonia; ?>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="numInt" class="col-sm-3 control-label"><?php echo $this->form->numInt->getLabel(); ?></label>
+        <div class="col-sm-9">
+            <?php 
+            $this->form->numInt->class = 'form-control';
+            echo $this->form->numInt; ?>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="numExt" class="col-sm-3 control-label"><?php echo $this->form->numExt->getLabel(); ?></label>
+        <div class="col-sm-9">
+            <?php
+            $this->form->numExt->class = 'form-control';
+            echo $this->form->numExt; ?>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="delegacion" class="col-sm-3 control-label"><?php echo $this->form->delegacion->getLabel(); ?></label>
+        <div class="col-sm-9">
+            <?php
+            $this->form->delegacion->class = 'form-control';
+            echo $this->form->delegacion; ?>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="entidadFederativa" class="col-sm-3 control-label"><?php echo $this->form->entidadFederativa->getLabel(); ?></label>
+        <div class="col-sm-9">
+            <?php
+            $this->form->entidadFederativa->class = 'form-control';
+            echo $this->form->entidadFederativa; ?>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="pais" class="col-sm-3 control-label"><?php echo $this->form->pais->getLabel(); ?></label>
+        <div class="col-sm-9">
+            <?php
+            $this->form->pais->class = 'form-control';
+            echo $this->form->pais; ?>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-9">
+            <button type="submit" class="btn btn-default">Guardar</button>
+        </div>
+    </div>
+</form>
