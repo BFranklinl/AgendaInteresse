@@ -35,7 +35,11 @@ class Application_Model_Contacto {
         if (('mapper' == $name) || !array_key_exists($name, $vars)) {
             throw new Exception('Propiedad inexistente para el contacto.');
         }
-        $this->{$name} = $value;
+        if ($name == '_id') {
+            $this->{$name} = (int)$value;
+        } else {
+            $this->{$name} = $value;
+        }
     }
  
     /**

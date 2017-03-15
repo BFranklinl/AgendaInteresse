@@ -27,11 +27,17 @@ class AgendaController extends Zend_Controller_Action {
             if (!$form->isValid($request->getPost())) {
                 $json['data'] = $form->getMessages();
                 $this->_helper->json($json);
-                return;
+                return; 
             }
-            $contacto = new Application_Model_Contacto($form->getValues());
+            $dataForm = $form->getValues();
+            $telefonos = $dataForm['']['telefono'];
+            
+            $contacto = new Application_Model_Contacto($dataForm['']);
             $mapper  = new Application_Model_ContactoMapper();
-            if ($mapper->save($contacto)) {
+
+            $respuesta = $mapper->save($contacto, $telefonos);
+            
+            if ($respuesta) {
                 $json['error'] = ERROR_OK;
             }
             $this->_helper->json($json);
@@ -40,24 +46,34 @@ class AgendaController extends Zend_Controller_Action {
         if (!empty($contactoId)) {
             $contacto = new Application_Model_Contacto();
             $mapper  = new Application_Model_ContactoMapper();
-            $data = $this->__normalizeData($mapper->find($contactoId, $contacto));
+            $data = $mapper->find($contactoId, $contacto);
+
+            $telefonos = $data['Telefono'];
+            $data = $this->__normalizeData($data);
+          
             $form->populate($data);
+            $nuevos;
+            foreach ($telefonos as $val){
+                $nuevos[] = $val['tel_numero'];
+            }
+            $this->view->telefonos = $nuevos;
         }
+        
         $this->view->form = $form;
     }
     
     protected function __normalizeData($array) {
         $newArray = array(
-            'id' => $array['contacto_id'],
-            'nombre' => $array['cont_nombre'],
-            'correoElectronico' => $array['cont_correo_electronico'],
-            'calle' => $array['cont_calle'],
-            'colonia' => $array['cont_colonia'],
-            'numInt' => $array['cont_num_int'],
-            'numExt' => $array['cont_num_ext'],
-            'delegacion' => $array['cont_delegacion'],
-            'entidadFederativa' => $array['cont_entidad_federativa'],
-            'pais' => $array['cont_pais'],
+            'id' => $array['Contacto']['contacto_id'],
+            'nombre' => $array['Contacto']['cont_nombre'],
+            'correoElectronico' => $array['Contacto']['cont_correo_electronico'],
+            'calle' => $array['Contacto']['cont_calle'],
+            'colonia' => $array['Contacto']['cont_colonia'],
+            'numInt' => $array['Contacto']['cont_num_int'],
+            'numExt' => $array['Contacto']['cont_num_ext'],
+            'delegacion' => $array['Contacto']['cont_delegacion'],
+            'entidadFederativa' => $array['Contacto']['cont_entidad_federativa'],
+            'pais' => $array['Contacto']['cont_pais'],  
         );
         return $newArray;
     }

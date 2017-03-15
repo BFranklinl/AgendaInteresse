@@ -105,8 +105,10 @@ $(document).ready(function(){
     });
 
     $('.addTelefono').on('click', function(){
-        var $input = $form.find('input[name=telefono]').last();
+        var $input = $form.find('input[name^=telefono]').last();
         var $new = $input.clone();
         $input.after($new.val(''));
     });
+    
+    setTelefonos();
 });

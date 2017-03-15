@@ -35,9 +35,9 @@ class Application_Model_ContactoMapper {
      * @param Application_Model_Contacto $contacto
      * @return boolean
      */
-    public function save(Application_Model_Contacto $contacto) {
+    public function save(Application_Model_Contacto $contacto, $telefonos) {
         $data = array(
-            'cont_nombre'   => $contacto->__get('nombre'),
+            'cont_nombre' => $contacto->__get('nombre'),
             'cont_correo_electronico' => $contacto->__get('correoElectronico'),
             'cont_calle' => $contacto->__get('calle'),
             'cont_colonia' => $contacto->__get('colonia'),
@@ -48,11 +48,13 @@ class Application_Model_ContactoMapper {
             'cont_pais' => $contacto->__get('pais'),
         );
         $db = Zend_Db_Table_Abstract::getDefaultAdapter();
+        
         $id = $contacto->__get('id');
         if (empty($id)) {
             $db->beginTransaction();
             try {
                 $save = $this->getDbTable()->insert($data);
+                $this->__setTelefono($telefonos, $save);
                 $db->commit();
                 return $save;
             } catch (Exception $e) {
@@ -61,12 +63,14 @@ class Application_Model_ContactoMapper {
         } else {
             $db->beginTransaction();
             try {
-                $update = $this->getDbTable()->update($data, array('contacto_id = ?' => $id));
+                $update = $this->getDbTable()->update($data, array('contacto_id = ' . $id));
+                $db = Zend_Db_Table_Abstract::getDefaultAdapter();
+                $db->delete('telefono', 'contacto_id = ' . $id);
+                $this->__setTelefono($telefonos, $id);
                 $db->commit();
-                return $update;
+                return true;
             } catch (Exception $e) {
                 $db->rollback();
-                echo $e;
             }
         }
         return false;
@@ -84,9 +88,15 @@ class Application_Model_ContactoMapper {
         if (0 == count($result)) {
             return;
         }
-        $row = $result->current()->toArray();
+        $row = $result->current();
+        $telefonos = $row->findDependentRowset('Application_Model_DbTable_Telefono')->toarray();
+        $row = $row->toArray();
         $contacto->__set('id', (int) $row['contacto_id']);
-        return $row;
+        $return = array(
+            'Contacto' => $row,
+            'Telefono' => $telefonos
+        );
+        return $return;
     }
  
     /**
@@ -135,6 +145,22 @@ class Application_Model_ContactoMapper {
             }
         }
         return $entries;
+    }
+    
+    private function __setTelefono($array, $contactoId) {
+        $array = array_map('trim', $array);
+        
+        foreach ($array as $index => $telefono) {
+            if (empty($telefono)) {
+                continue;
+            }
+            $tel = new Application_Model_Telefono();
+            $telMap  = new Application_Model_TelefonoMapper();
+            $tel->__set('numero', $telefono);
+            $tel->__set('contactoId', $contactoId);
+            
+            $telMap->save($tel);
+        }
     }
 }
 

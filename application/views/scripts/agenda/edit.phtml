@@ -1,8 +1,11 @@
+<script>
+    var telefonos = <?php echo json_encode($this->telefonos);?>;
+</script>
 <?php
 echo $this->headScript()->prependFile($this->baseUrl() . '/js/editContacto.js');
 ?>
 <form class="form-horizontal" action ="<?php echo $this->url();?>" id="formEditContacto">
-    <h5 class="text-muted">Datos generales</h5>
+    <h5>Datos generales</h5>
     <?php echo $this->form->id; ?>
     <div class="form-group">
         <label for="nombre" class="col-sm-3 control-label"><?php echo $this->form->nombre->getLabel(); ?></label>
@@ -23,14 +26,19 @@ echo $this->headScript()->prependFile($this->baseUrl() . '/js/editContacto.js');
     <div class="form-group">
         <label for="telefono" class="col-sm-3 control-label"><?php echo $this->form->telefono->getLabel(); ?></label>
         <div class="col-sm-9">
-            <?php 
-            $this->form->telefono->class = 'form-control';
-            echo $this->form->telefono; ?>
+            <?php
+            if (empty($this->telefonos)) {
+                echo $this->form->telefono; 
+            } else {
+                foreach ($this->telefonos as $index => $tel) {
+                    echo $this->form->telefono; 
+                }
+            }?>
             <button type="button" class="btn btn-sm btn-success addTelefono"><i class="glyphicon glyphicon-plus"></i> <i class="glyphicon glyphicon-earphone"></i></button>
         </div>
     </div>
     <hr />
-    <h5 class="text-muted">Domicilio</h5>
+    <h5>Domicilio</h5>
     <div class="form-group">
         <label for="calle" class="col-sm-3 control-label"><?php echo $this->form->calle->getLabel(); ?></label>
         <div class="col-sm-9">

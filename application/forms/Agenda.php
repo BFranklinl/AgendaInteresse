@@ -25,9 +25,11 @@ class Application_Form_Agenda extends Zend_Form {
         ));
         
         $this->addElement('text', 'telefono', array(
-            'label'      => 'Teléfono(s):',
-            'required'   => false,
-        ));
+            'label' => 'Teléfono(s):',
+            'required' => false,
+            'isarray' => true,
+            'class' => 'form-control'
+        ))->setIsArray(true);
  
         $this->addElement('text', 'calle', array(
             'label'      => 'Calle:',

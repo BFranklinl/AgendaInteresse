@@ -70,3 +70,9 @@ function saveContacto(id) {
     });
     
 }
+
+function setTelefonos() {
+    $('#formEditContacto input[name="telefono[]"]').each(function(index, value){
+        $(value).val(telefonos[index]);
+    });
+}
